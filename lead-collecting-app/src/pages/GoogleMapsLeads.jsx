@@ -485,7 +485,7 @@ export default function GoogleMapsLeads() {
                   rows={8}
                   value={emailMessage}
                   onChange={(e) => setEmailMessage(e.target.value)}
-                  placeholder={`Hi {{businessName}},\n\nI found your business on Google Maps...\n\nAvailable variables: {{businessName}}, {{email}}, {{phone}}, {{website}}, {{address}}, {{rating}}`}
+                  placeholder="Hi {{businessName}},&#10;&#10;I found your business on Google Maps...&#10;&#10;Available variables: {{businessName}}, {{email}}, {{phone}}, {{website}}, {{address}}, {{rating}}"
                   disabled={isSendingEmails}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
                 />
@@ -551,164 +551,167 @@ export default function GoogleMapsLeads() {
                   </tr>
                 </thead>
                 <tbody>
-                  {leads.map((lead, index) => (
-                    <tr
-                      key={lead.id}
-                      className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                    >
-                      <td className="px-4 py-3">
-                        <div className="font-medium text-gray-900">
-                          {lead.businessName}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {lead.category}
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="space-y-1">
-                          {lead.email && (
-                            <div className="flex items-center gap-1 text-sm">
-                              <Mail size={14} className="text-green-600" />
+                  {leads.map((lead, index) => {
+                    const leadId = lead._id || lead.id;
+                    return (
+                      <tr
+                        key={leadId}
+                        className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                      >
+                        <td className="px-4 py-3">
+                          <div className="font-medium text-gray-900">
+                            {lead.businessName}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {lead.category}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="space-y-1">
+                            {lead.email && (
+                              <div className="flex items-center gap-1 text-sm">
+                                <Mail size={14} className="text-green-600" />
+                                <a
+                                  href={`mailto:${lead.email}`}
+                                  className="text-blue-600 hover:underline"
+                                >
+                                  {lead.email}
+                                </a>
+                                {lead.emailSent && (
+                                  <MailCheck
+                                    size={14}
+                                    className="text-green-600 ml-1"
+                                    title="Email sent"
+                                  />
+                                )}
+                              </div>
+                            )}
+                            {lead.phone && (
+                              <div className="flex items-center gap-1 text-sm">
+                                <Phone size={14} className="text-purple-600" />
+                                <span className="text-gray-700">
+                                  {lead.phone}
+                                </span>
+                              </div>
+                            )}
+                            {lead.website && (
+                              <div className="flex items-center gap-1 text-sm">
+                                <Globe size={14} className="text-orange-600" />
+                                <a
+                                  href={lead.website}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:underline"
+                                >
+                                  Website
+                                </a>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex gap-2">
+                            {lead.facebook && (
                               <a
-                                href={`mailto:${lead.email}`}
-                                className="text-blue-600 hover:underline"
-                              >
-                                {lead.email}
-                              </a>
-                              {lead.emailSent && (
-                                <MailCheck
-                                  size={14}
-                                  className="text-green-600 ml-1"
-                                  title="Email sent"
-                                />
-                              )}
-                            </div>
-                          )}
-                          {lead.phone && (
-                            <div className="flex items-center gap-1 text-sm">
-                              <Phone size={14} className="text-purple-600" />
-                              <span className="text-gray-700">
-                                {lead.phone}
-                              </span>
-                            </div>
-                          )}
-                          {lead.website && (
-                            <div className="flex items-center gap-1 text-sm">
-                              <Globe size={14} className="text-orange-600" />
-                              <a
-                                href={lead.website}
+                                href={lead.facebook}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-blue-600 hover:underline"
+                                className="text-blue-600 hover:text-blue-800"
+                                title="Facebook"
                               >
-                                Website
+                                <Facebook size={18} />
                               </a>
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex gap-2">
-                          {lead.facebook && (
-                            <a
-                              href={lead.facebook}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-600 hover:text-blue-800"
-                              title="Facebook"
-                            >
-                              <Facebook size={18} />
-                            </a>
-                          )}
-                          {lead.instagram && (
-                            <a
-                              href={lead.instagram}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-pink-600 hover:text-pink-800"
-                              title="Instagram"
-                            >
-                              <Instagram size={18} />
-                            </a>
-                          )}
-                          {lead.twitter && (
-                            <a
-                              href={lead.twitter}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-400 hover:text-blue-600"
-                              title="Twitter"
-                            >
-                              <Twitter size={18} />
-                            </a>
-                          )}
-                          {lead.linkedin && (
-                            <a
-                              href={lead.linkedin}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-700 hover:text-blue-900"
-                              title="LinkedIn"
-                            >
-                              <Linkedin size={18} />
-                            </a>
-                          )}
-                          {!lead.facebook &&
-                            !lead.instagram &&
-                            !lead.twitter &&
-                            !lead.linkedin && (
-                              <span className="text-xs text-gray-400">
-                                None found
-                              </span>
                             )}
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-start gap-1 text-sm text-gray-700">
-                          <MapPinned
-                            size={14}
-                            className="mt-0.5 flex-shrink-0 text-red-500"
-                          />
-                          <span className="line-clamp-2">
-                            {lead.address || "N/A"}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="text-center">
-                          {lead.rating && (
-                            <div className="font-medium text-yellow-600">
-                              ⭐ {lead.rating}
-                            </div>
-                          )}
-                          {lead.reviews && (
-                            <div className="text-xs text-gray-500">
-                              {lead.reviews} reviews
-                            </div>
-                          )}
-                          {!lead.rating && (
-                            <span className="text-gray-400">N/A</span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex justify-center">
-                          <button
-                            onClick={() => deleteLead(lead.id)}
-                            disabled={deletingLeadId === lead.id}
-                            className="text-red-600 hover:text-red-800 hover:bg-red-50 p-2 rounded-lg transition-colors disabled:opacity-50"
-                            title="Delete lead"
-                          >
-                            {deletingLeadId === lead.id ? (
-                              <Loader2 size={18} className="animate-spin" />
-                            ) : (
-                              <X size={18} />
+                            {lead.instagram && (
+                              <a
+                                href={lead.instagram}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-pink-600 hover:text-pink-800"
+                                title="Instagram"
+                              >
+                                <Instagram size={18} />
+                              </a>
                             )}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                            {lead.twitter && (
+                              <a
+                                href={lead.twitter}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-400 hover:text-blue-600"
+                                title="Twitter"
+                              >
+                                <Twitter size={18} />
+                              </a>
+                            )}
+                            {lead.linkedin && (
+                              <a
+                                href={lead.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-700 hover:text-blue-900"
+                                title="LinkedIn"
+                              >
+                                <Linkedin size={18} />
+                              </a>
+                            )}
+                            {!lead.facebook &&
+                              !lead.instagram &&
+                              !lead.twitter &&
+                              !lead.linkedin && (
+                                <span className="text-xs text-gray-400">
+                                  None found
+                                </span>
+                              )}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-start gap-1 text-sm text-gray-700">
+                            <MapPinned
+                              size={14}
+                              className="mt-0.5 flex-shrink-0 text-red-500"
+                            />
+                            <span className="line-clamp-2">
+                              {lead.address || "N/A"}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="text-center">
+                            {lead.rating && (
+                              <div className="font-medium text-yellow-600">
+                                ⭐ {lead.rating}
+                              </div>
+                            )}
+                            {lead.reviews && (
+                              <div className="text-xs text-gray-500">
+                                {lead.reviews} reviews
+                              </div>
+                            )}
+                            {!lead.rating && (
+                              <span className="text-gray-400">N/A</span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex justify-center">
+                            <button
+                              onClick={() => deleteLead(leadId)}
+                              disabled={deletingLeadId === leadId}
+                              className="text-red-600 hover:text-red-800 hover:bg-red-50 p-2 rounded-lg transition-colors disabled:opacity-50"
+                              title="Delete lead"
+                            >
+                              {deletingLeadId === leadId ? (
+                                <Loader2 size={18} className="animate-spin" />
+                              ) : (
+                                <X size={18} />
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
