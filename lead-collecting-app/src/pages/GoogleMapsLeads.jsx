@@ -221,6 +221,9 @@ export default function GoogleMapsLeads() {
   // NEW: Update lead notes
   const updateLeadNote = async (leadId, notes) => {
     try {
+      console.log("Updating note for lead:", leadId);
+      console.log("Note content:", notes);
+
       const response = await fetch(
         `${API_URL}/leads/google-maps/${leadId}/notes`,
         {
@@ -230,7 +233,10 @@ export default function GoogleMapsLeads() {
         }
       );
 
+      console.log("Response status:", response.status);
+
       const data = await response.json();
+      console.log("Response data:", data);
 
       if (data.success) {
         await loadExistingLeads();
