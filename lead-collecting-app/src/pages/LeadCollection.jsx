@@ -9,7 +9,7 @@ import {
   XCircle,
 } from "lucide-react";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://united-gwennie-shoplift-studio-ce4f7ede.koyeb.app/";
 
 export default function LeadCollectionSystem() {
   const [url, setUrl] = useState("");
