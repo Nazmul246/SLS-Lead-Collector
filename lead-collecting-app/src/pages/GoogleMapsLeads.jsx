@@ -28,7 +28,7 @@ import { EmailComposer } from "../components/EmailComposer";
 import { LeadsTable } from "../components/LeadsTable";
 import { BackendErrorAlert } from "../components/BackendErrorAlert";
 
-const API_URL = "https://united-gwennie-shoplift-studio-ce4f7ede.koyeb.app";
+const API_URL = "https://united-gwennie-shoplift-studio-ce4f7ede.koyeb.app/api";
 
 export default function GoogleMapsLeads() {
   const [searchQuery, setSearchQuery] = useState("");
