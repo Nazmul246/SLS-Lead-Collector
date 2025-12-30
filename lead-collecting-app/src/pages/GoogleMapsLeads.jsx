@@ -421,7 +421,7 @@ export default function GoogleMapsLeads() {
         muted
         loop
         playsInline
-        className="fixed top-0 left-0 w-full h-full object-cover -z-10 pointer-events-none md:object-center object-[30%_30%]"
+        className="fixed top-0 left-0 w-full h-full object-cover -z-10 pointer-events-none md:object-center object-[70%_center]"
       >
         <source src={bgVideo} type="video/mp4" />
         Your browser does not support the video tag.
