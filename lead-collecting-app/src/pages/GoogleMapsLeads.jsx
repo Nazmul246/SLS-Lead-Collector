@@ -85,6 +85,37 @@ export default function GoogleMapsLeads() {
     }
   };
 
+  // NEW: Update manual entry for a lead
+  const updateManualEntry = async (leadId, formData) => {
+    try {
+      console.log("Updating manual entry for lead:", leadId);
+      console.log("Form data:", formData);
+
+      const response = await fetch(
+        `${API_URL}/leads/google-maps/${leadId}/manual-entry`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      console.log("Response status:", response.status);
+
+      const data = await response.json();
+      console.log("Response data:", data);
+
+      if (data.success) {
+        await loadExistingLeads();
+        await loadStats();
+      } else {
+        throw new Error(data.error || "Failed to update manual entry");
+      }
+    } catch (error) {
+      alert("Error updating manual entry: " + error.message);
+    }
+  };
+
   const deleteLead = async (leadId) => {
     if (!window.confirm("Are you sure you want to delete this lead?")) {
       return;
@@ -435,6 +466,7 @@ export default function GoogleMapsLeads() {
           onToggleSelect={handleToggleSelect}
           onToggleSelectAll={handleToggleSelectAll}
           onUpdateNote={updateLeadNote}
+          onUpdateManualEntry={updateManualEntry}
         />
 
         <BackendErrorAlert backendStatus={backendStatus} />
