@@ -173,7 +173,7 @@ export const LeadsTable = ({
                         {lead.phone && (
                           <div className="flex items-center gap-1 text-sm">
                             <Phone size={14} className="text-purple-600" />
-                            <span className="text-white font-bold">
+                            <span className="text-black font-bold">
                               {lead.phone}
                             </span>
                           </div>
@@ -268,7 +268,7 @@ export const LeadsTable = ({
                       </div>
                     </td>
                     <td className="px-4 py-3 max-w-50">
-                      <div className="flex items-start gap-1 text-sm text-white overflow-x-auto">
+                      <div className="flex items-start gap-1 text-sm text-black overflow-x-auto">
                         <MapPinned
                           size={14}
                           className="mt-0.5 flex-shrink-0 text-red-500"
