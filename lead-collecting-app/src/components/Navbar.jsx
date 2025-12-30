@@ -24,16 +24,16 @@ const Navbar = () => {
 
   return (
     <nav className="bg-[#22323c] shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-4 lg:py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-4 lg:py-2">
         <div className="flex items-center justify-between h-16">
           {/* Logo Section */}
           <Link to="/" className="flex items-center space-x-2">
             {/* <div className="bg-white p-2 rounded-lg shadow-md">
               <Database className="h-6 w-6 text-indigo-600" />
             </div> */}
-            <span className="text-white font-bold text-xl hidden sm:block">
-              <img src={logo} alt="Shoplift Studio Logo" className="h-12" />
-            </span>
+            {/* <span className="text-white font-bold text-xl hidden sm:block"> */}
+            <img src={logo} alt="Shoplift Studio Logo" className="h-8" />
+            {/* </span> */}
           </Link>
 
           {/* Desktop Navigation */}

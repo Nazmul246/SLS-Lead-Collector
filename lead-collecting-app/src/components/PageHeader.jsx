@@ -7,14 +7,16 @@ export const PageHeader = ({
   backendStatus,
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-      <div className="flex justify-between items-start">
+    <div className="backdrop-blur-lg bg-white/15 rounded-lg shadow-2xl p-6 border border-white/30 mb-6">
+      <div className="flex justify-between items-start flex-col-reverse gap-2 lg:flex-row lg:gap-0">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <Icon className="h-8 w-8 text-green-600" />
-            <h1 className="text-3xl font-bold text-gray-800">{title}</h1>
+            <Icon className="h-6 w-6 text-green-300" />
+            <h1 className="text-xl lg:text-3xl font-bold text-white">
+              {title}
+            </h1>
           </div>
-          <p className="text-gray-600">{description}</p>
+          <p className="text-white">{description}</p>
         </div>
         <div className="flex items-center gap-2">
           {backendStatus === "connected" && (
@@ -30,7 +32,7 @@ export const PageHeader = ({
             </div>
           )}
           {backendStatus === "checking" && (
-            <div className="flex items-center gap-2 text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
+            <div className="flex items-center gap-2 text-white bg-gray-50 px-3 py-2 rounded-lg">
               <Loader2 className="animate-spin" size={20} />
               <span className="text-sm font-medium">Checking...</span>
             </div>

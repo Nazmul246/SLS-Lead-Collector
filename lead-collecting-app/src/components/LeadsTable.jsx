@@ -73,8 +73,8 @@ export const LeadsTable = ({
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">
+      <div className="backdrop-blur-lg bg-white/15 rounded-lg shadow-2xl border border-white/30 p-6">
+        <h2 className="text-xl font-bold text-white mb-4">
           Collected Leads ({leads.length})
           {selectedLeads.length > 0 && (
             <span className="ml-2 text-sm text-purple-600">
@@ -85,7 +85,7 @@ export const LeadsTable = ({
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-gray-50">
+              <tr className="backdrop-blur-lg bg-white/15 shadow-2xl border border-white/30">
                 <th className="px-4 py-3 text-center">
                   <input
                     type="checkbox"
@@ -97,25 +97,25 @@ export const LeadsTable = ({
                     className="w-4 h-4 text-purple-600 rounded focus:ring-2 focus:ring-purple-500 cursor-pointer"
                   />
                 </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                <th className="px-4 py-3 text-left text-sm font-semibold text-white">
                   Business Name
                 </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                <th className="px-4 py-3 text-left text-sm font-semibold text-white">
                   Contact Info
                 </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                <th className="px-4 py-3 text-left text-sm font-semibold text-white">
                   Social Media
                 </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                <th className="px-4 py-3 text-left text-sm font-semibold text-white">
                   Location
                 </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                <th className="px-4 py-3 text-left text-sm font-semibold text-white">
                   Rating
                 </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 min-w-[200px]">
+                <th className="px-4 py-3 text-left text-sm font-semibold text-white min-w-[200px]">
                   Notes
                 </th>
-                <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700">
+                <th className="px-4 py-3 text-center text-sm font-semibold text-white">
                   Actions
                 </th>
               </tr>
@@ -131,7 +131,9 @@ export const LeadsTable = ({
                   <tr
                     key={leadId}
                     className={`${
-                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      index % 2 === 0
+                        ? "backdrop-blur-lg bg-white/70 shadow-2xl"
+                        : "backdrop-blur-lg bg-white/60 shadow-2xl"
                     } ${isSelected ? "bg-purple-50" : ""}`}
                   >
                     <td className="px-4 py-3 text-center">
@@ -142,15 +144,13 @@ export const LeadsTable = ({
                         className="w-4 h-4 text-purple-600 rounded focus:ring-2 focus:ring-purple-500 cursor-pointer"
                       />
                     </td>
-                    <td className="px-4 py-3">
-                      <div className="font-medium text-gray-900">
+                    <td className="px-0 py-0 lg:px-4 lg:py-3 max-w-70">
+                      <div className="text-sm lg:font-medium text-gray-900">
                         {lead.businessName}
                       </div>
-                      <div className="text-xs text-gray-500">
-                        {lead.category}
-                      </div>
+                      <div className="text-xs text-black">{lead.category}</div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 max-w-40 lg:max-w-50">
                       <div className="space-y-1">
                         {lead.email && (
                           <div className="flex items-center gap-1 text-sm">
@@ -173,7 +173,9 @@ export const LeadsTable = ({
                         {lead.phone && (
                           <div className="flex items-center gap-1 text-sm">
                             <Phone size={14} className="text-purple-600" />
-                            <span className="text-gray-700">{lead.phone}</span>
+                            <span className="text-white font-bold">
+                              {lead.phone}
+                            </span>
                           </div>
                         )}
                         {lead.website && (
@@ -200,7 +202,7 @@ export const LeadsTable = ({
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex gap-2 items-center flex-wrap">
+                      <div className="flex gap-2 items-center flex-wrap justify-center">
                         {lead.facebook && (
                           <a
                             href={lead.facebook}
@@ -251,22 +253,22 @@ export const LeadsTable = ({
                           !lead.linkedin && (
                             <button
                               onClick={() => handleOpenManualEntry(lead)}
-                              className="text-xs text-purple-600 hover:text-purple-800 underline"
+                              className="text-xs text-red-500 hover:text-purple-800 cursor-pointer"
                             >
-                              + Add social media
+                              No social media found
                             </button>
                           )}
                         <button
                           onClick={() => handleOpenManualEntry(lead)}
-                          className="text-gray-500 hover:text-purple-600 p-1 rounded hover:bg-purple-50 transition-colors"
+                          className="text-gray-500 hover:text-purple-600 p-1 rounded hover:bg-purple-50 transition-colors cursor-pointer"
                           title="Edit contact details"
                         >
                           <Edit size={16} />
                         </button>
                       </div>
                     </td>
-                    <td className="px-4 py-3 max-w-[120px]">
-                      <div className="flex items-start gap-1 text-sm text-gray-700 overflow-x-auto">
+                    <td className="px-4 py-3 max-w-50">
+                      <div className="flex items-start gap-1 text-sm text-white overflow-x-auto">
                         <MapPinned
                           size={14}
                           className="mt-0.5 flex-shrink-0 text-red-500"
@@ -276,7 +278,7 @@ export const LeadsTable = ({
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-0 py-0 lg:px-4 lg:py-3">
                       <div className="text-center">
                         {lead.rating && (
                           <div className="font-medium text-yellow-600">
@@ -284,7 +286,7 @@ export const LeadsTable = ({
                           </div>
                         )}
                         {lead.reviews && (
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-black">
                             {lead.reviews} reviews
                           </div>
                         )}
@@ -293,7 +295,7 @@ export const LeadsTable = ({
                         )}
                       </div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 max-w-100">
                       {isEditing ? (
                         <div className="flex flex-col gap-2">
                           <textarea
@@ -331,9 +333,9 @@ export const LeadsTable = ({
                           className="relative group cursor-pointer"
                           onClick={() => handleStartEdit(lead)}
                         >
-                          <div className="max-h-[80px] overflow-y-auto text-sm text-gray-700 pr-6">
+                          <div className="max-h-[80px] overflow-y-auto text-sm text-white pr-6">
                             {lead.notes || (
-                              <span className="text-gray-400 italic">
+                              <span className="text-black italic">
                                 Click to add notes...
                               </span>
                             )}
@@ -350,7 +352,7 @@ export const LeadsTable = ({
                         <button
                           onClick={() => onDeleteLead(leadId)}
                           disabled={deletingLeadId === leadId}
-                          className="text-red-600 hover:text-red-800 hover:bg-red-50 p-2 rounded-lg transition-colors disabled:opacity-50"
+                          className="text-red-600 hover:text-red-800 hover:bg-red-50 p-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
                           title="Delete lead"
                         >
                           {deletingLeadId === leadId ? (

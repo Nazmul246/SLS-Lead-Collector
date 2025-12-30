@@ -5,57 +5,55 @@ export const StatsDashboard = ({ stats }) => {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="backdrop-blur-lg bg-white/15 rounded-lg shadow-2xl border border-white/30 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-600">Total Leads</p>
-            <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
+            <p className="text-sm text-white">Total Leads</p>
+            <p className="text-2xl font-bold text-blue-300">{stats.total}</p>
           </div>
-          <TrendingUp className="h-8 w-8 text-blue-500" />
+          <TrendingUp className="h-8 w-8 text-blue-300" />
         </div>
       </div>
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="backdrop-blur-lg bg-white/15 rounded-lg shadow-2xl border border-white/30 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-600">With Email</p>
-            <p className="text-2xl font-bold text-green-600">
-              {stats.withEmail}
-            </p>
+            <p className="text-sm text-white">With Email</p>
+            <p className="text-2xl font-bold text-red-300">{stats.withEmail}</p>
           </div>
-          <Mail className="h-8 w-8 text-green-500" />
+          <Mail className="h-8 w-8 text-red-300" />
         </div>
       </div>
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="backdrop-blur-lg bg-white/15 rounded-lg shadow-2xl border border-white/30 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-600">Total Email Sent</p>
-            <p className="text-2xl font-bold text-green-600">
+            <p className="text-sm text-white">Total Email Sent</p>
+            <p className="text-2xl font-bold text-red-300">
               {stats.emailsSent}
             </p>
           </div>
-          <Mail className="h-8 w-8 text-green-500" />
+          <Mail className="h-8 w-8 text-red-300" />
         </div>
       </div>
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="backdrop-blur-lg bg-white/15 rounded-lg shadow-2xl border border-white/30 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-600">With Phone</p>
-            <p className="text-2xl font-bold text-purple-600">
+            <p className="text-sm text-white">With Phone</p>
+            <p className="text-2xl font-bold text-[#31ff78]">
               {stats.withPhone}
             </p>
           </div>
-          <Phone className="h-8 w-8 text-purple-500" />
+          <Phone className="h-8 w-8 text-[#31ff78]" />
         </div>
       </div>
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="backdrop-blur-lg bg-white/15 rounded-lg shadow-2xl border border-white/30 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-600">With Website</p>
-            <p className="text-2xl font-bold text-orange-600">
+            <p className="text-sm text-white">With Website</p>
+            <p className="text-2xl font-bold text-[#ff8332]">
               {stats.withWebsite}
             </p>
           </div>
-          <Globe className="h-8 w-8 text-orange-500" />
+          <Globe className="h-8 w-8 text-[#ff8332]" />
         </div>
       </div>
     </div>

@@ -27,6 +27,7 @@ import { ActionButtonsBar } from "../components/ActionButtonsBar";
 import { EmailComposer } from "../components/EmailComposer";
 import { LeadsTable } from "../components/LeadsTable";
 import { BackendErrorAlert } from "../components/BackendErrorAlert";
+import bgVideo from "../assets/bg2.mp4";
 
 const API_URL = "https://united-gwennie-shoplift-studio-ce4f7ede.koyeb.app/api";
 
@@ -413,7 +414,22 @@ export default function GoogleMapsLeads() {
   ).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-100 p-6">
+    <div className="min-h-screen p-6">
+      {/* Background Video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="fixed top-0 left-0 w-full h-full object-cover -z-10 pointer-events-none md:object-center object-[30%_30%]"
+      >
+        <source src={bgVideo} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      {/* Optional: Dark overlay for better readability */}
+
+      <div className="fixed top-0 left-0 w-full h-full bg-gradient-to-br from-black/60 via-purple-900/40 to-black/50 -z-10"></div>
       <div className="max-w-400 mx-auto">
         <PageHeader
           icon={MapPin}

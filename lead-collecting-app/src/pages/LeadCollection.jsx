@@ -291,7 +291,7 @@ export default function LeadCollectionSystem() {
             <div className="flex gap-4 flex-wrap">
               <button
                 onClick={exportToExcel}
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white cursor-pointer font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
               >
                 <Download size={20} />
                 Export to Excel ({leads.length} leads)
