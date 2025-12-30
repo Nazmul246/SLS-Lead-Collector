@@ -1,10 +1,10 @@
 import React from "react";
-import LeadCollectionSystem from "../pages/LeadCollection";
+import GoogleMapsLeads from "../pages/GoogleMapsLeads";
 
 const Home = () => {
   return (
     <div>
-      <LeadCollectionSystem />
+      <GoogleMapsLeads />
     </div>
   );
 };

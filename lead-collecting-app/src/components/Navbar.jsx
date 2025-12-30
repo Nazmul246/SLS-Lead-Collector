@@ -9,16 +9,16 @@ const Navbar = () => {
 
   const navItems = [
     {
-      id: "shopify",
-      label: "Shopify Directory",
-      icon: Database,
-      path: "/shopify-directory",
-    },
-    {
       id: "google-maps",
       label: "Google Maps",
       icon: Map,
       path: "/google-maps",
+    },
+    {
+      id: "shopify",
+      label: "Shopify Directory",
+      icon: Database,
+      path: "/shopify-directory",
     },
   ];
 
