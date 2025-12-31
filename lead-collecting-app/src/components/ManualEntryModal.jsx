@@ -53,12 +53,13 @@ export const ManualEntryModal = ({ lead, onClose, onSave }) => {
             <div>
               <h2 className="text-2xl font-bold">Manual Entry</h2>
               <p className="text-purple-100 text-sm mt-1">
-                {lead?.businessName || "Add contact details and social media"}
+                For "
+                {lead?.businessName || "Add contact details and social media"}"
               </p>
             </div>
             <button
               onClick={onClose}
-              className="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+              className="text-white hover:bg-white hover:text-black cursor-pointer hover:bg-opacity-20 p-2 rounded-lg transition-colors"
             >
               <X size={24} />
             </button>
@@ -230,14 +231,14 @@ export const ManualEntryModal = ({ lead, onClose, onSave }) => {
             <button
               onClick={onClose}
               disabled={isSaving}
-              className="flex-1 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+              className="flex-1 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400 text-white py-3 px-4 rounded-lg font-medium transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               onClick={handleSubmit}
               disabled={isSaving}
-              className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-400 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+              className="cursor-pointer flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-400 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
             >
               {isSaving ? (
                 <>
