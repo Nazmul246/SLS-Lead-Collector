@@ -333,7 +333,7 @@ export const LeadsTable = ({
                           className="relative group cursor-pointer"
                           onClick={() => handleStartEdit(lead)}
                         >
-                          <div className="max-h-[80px] overflow-y-auto text-sm text-white pr-6">
+                          <div className="max-h-[80px] overflow-y-auto text-sm text-black pr-6">
                             {lead.notes || (
                               <span className="text-black italic">
                                 Click to add notes...
