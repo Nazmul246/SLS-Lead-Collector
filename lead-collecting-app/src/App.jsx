@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import LeadCollectionSystem from "./pages/LeadCollection";
 import GoogleMapsLeads from "./pages/GoogleMapsLeads";
+import MessageFormat from "./pages/MessageFormat";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/shopify-directory" element={<LeadCollectionSystem />} />
         <Route path="/google-maps" element={<GoogleMapsLeads />} />
+        <Route path="/message-format" element={<MessageFormat />} />
       </Routes>
     </BrowserRouter>
   );

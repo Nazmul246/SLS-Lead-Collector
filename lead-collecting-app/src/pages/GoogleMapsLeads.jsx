@@ -29,7 +29,7 @@ import { LeadsTable } from "../components/LeadsTable";
 import { BackendErrorAlert } from "../components/BackendErrorAlert";
 import bgVideo from "../assets/bg2.mp4";
 
-const API_URL = "https://united-gwennie-shoplift-studio-ce4f7ede.koyeb.app/api";
+const API_URL = "http://localhost:5000/api";
 
 export default function GoogleMapsLeads() {
   const [searchQuery, setSearchQuery] = useState("");

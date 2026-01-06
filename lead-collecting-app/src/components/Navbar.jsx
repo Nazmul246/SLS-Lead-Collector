@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Database, Map, Github, Linkedin } from "lucide-react";
+import {
+  Menu,
+  X,
+  Database,
+  Map,
+  Github,
+  Linkedin,
+  MessageSquare,
+} from "lucide-react";
 import logo from "../assets/Shoplift Studio Logo.png";
 
 const Navbar = () => {
@@ -19,6 +27,12 @@ const Navbar = () => {
       label: "Shopify Directory",
       icon: Database,
       path: "/shopify-directory",
+    },
+    {
+      id: "messageFormat",
+      label: "Message Format",
+      icon: MessageSquare,
+      path: "/message-format",
     },
   ];
 
