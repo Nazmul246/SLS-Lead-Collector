@@ -11,13 +11,28 @@ const MessageFormat = () => {
   const leadData = [
     {
       number: 1,
-      note: "The website is a portfolio website. A full store design email needs to be sent.",
+      note: "Only a not-designed page. A full store design email needs to be sent.\nThey don't have any website. A full store design email needs to be sent.\nThey don't have any website, now using ebay. A full store design email needs to be sent.\nThe website is a portfolio website. A full store design email needs to be sent.",
     },
     {
       number: 2,
-      note: "Follow-up needed - Asked about custom integration options",
+      note: "Website is designed on wordpress, but doesn’t look decent. Need to send redesign + ongoing website support email.\nWebsite is designed, but doesn’t look decent. Need to send redesign + ongoing website support email\nWebsite is designed, but doesn’t look decent. Only one page design without any proper products. Need to send redesign + ongoing website support email.\nWebsite is designed with custom code, but doesn’t look decent. Need to send redesign + ongoing website support email.\nWebsite is designed on squarespace, but doesn’t look decent. Need to send redesign + ongoing website support email.",
     },
-    { number: 3, note: "Hot lead - Ready to schedule demo next week" },
+    {
+      number: 3,
+      note: "The website is designed properly. Need to send ongoing website support email.",
+    },
+    {
+      number: 4,
+      note: "We can send collaboration types email with redesign of her website.\nWe can send collaboration types email for any future projects that the team has on their minds.",
+    },
+    {
+      number: 5,
+      note: "We can send collaboration types email for any future projects that he has on his minds. Note: Client name: Reza Ahmadi.",
+    },
+    {
+      number: 6,
+      note: "The website is designed with WordPress woo-commerce, we can check back later, and also can send a website migration",
+    },
   ];
 
   const messages = leadData.map((lead) => ({
@@ -120,7 +135,9 @@ const MessageFormat = () => {
                     <td className="px-6 py-4 text-blue-400 font-medium hover:text-blue-300 transition-colors">
                       #{lead.number}
                     </td>
-                    <td className="px-6 py-4 text-gray-300">{lead.note}</td>
+                    <td className="px-6 py-4 text-gray-300 whitespace-pre-wrap">
+                      {lead.note}
+                    </td>
                   </tr>
                 ))}
               </tbody>
