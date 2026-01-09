@@ -29,7 +29,13 @@ import { LeadsTable } from "../components/LeadsTable";
 import { BackendErrorAlert } from "../components/BackendErrorAlert";
 import bgVideo from "../assets/bg2.mp4";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://unproposable-jennie-unhalved.ngrok-free.dev/api";
+
+// The magic header needed for Ngrok Free Tier
+const NGROK_HEADERS = {
+  "ngrok-skip-browser-warning": "true",
+  "Content-Type": "application/json",
+};
 
 export default function GoogleMapsLeads() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,7 +61,11 @@ export default function GoogleMapsLeads() {
 
   const checkBackendHealth = async () => {
     try {
-      const response = await fetch(`${API_URL}/health`);
+      // const response = await fetch(`${API_URL}/health`);
+
+      const response = await fetch(`${API_URL}/health`, {
+        headers: { "ngrok-skip-browser-warning": "true" }, // Added here
+      });
       if (response.ok) {
         setBackendStatus("connected");
       } else {
@@ -68,7 +78,12 @@ export default function GoogleMapsLeads() {
 
   const loadExistingLeads = async () => {
     try {
-      const response = await fetch(`${API_URL}/leads/google-maps`);
+      // const response = await fetch(`${API_URL}/leads/google-maps`);
+
+      const response = await fetch(`${API_URL}/leads/google-maps`, {
+        headers: { "ngrok-skip-browser-warning": "true" }, // Added here
+      });
+
       const data = await response.json();
       setLeads(data.leads || []);
     } catch (error) {
@@ -78,7 +93,12 @@ export default function GoogleMapsLeads() {
 
   const loadStats = async () => {
     try {
-      const response = await fetch(`${API_URL}/stats/google-maps`);
+      // const response = await fetch(`${API_URL}/stats/google-maps`);
+
+      const response = await fetch(`${API_URL}/stats/google-maps`, {
+        headers: { "ngrok-skip-browser-warning": "true" }, // Added here
+      });
+
       const data = await response.json();
       setStats(data);
     } catch (error) {
@@ -92,11 +112,20 @@ export default function GoogleMapsLeads() {
       console.log("Updating manual entry for lead:", leadId);
       console.log("Form data:", formData);
 
+      // const response = await fetch(
+      //   `${API_URL}/leads/google-maps/${leadId}/manual-entry`,
+      //   {
+      //     method: "PATCH",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify(formData),
+      //   }
+      // );
+
       const response = await fetch(
         `${API_URL}/leads/google-maps/${leadId}/manual-entry`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: NGROK_HEADERS, // Uses the object we defined at the top
           body: JSON.stringify(formData),
         }
       );
@@ -125,8 +154,13 @@ export default function GoogleMapsLeads() {
     setDeletingLeadId(leadId);
 
     try {
+      // const response = await fetch(`${API_URL}/leads/google-maps/${leadId}`, {
+      //   method: "DELETE",
+      // });
+
       const response = await fetch(`${API_URL}/leads/google-maps/${leadId}`, {
         method: "DELETE",
+        headers: { "ngrok-skip-browser-warning": "true" }, // Added here
       });
 
       const data = await response.json();
@@ -160,9 +194,15 @@ export default function GoogleMapsLeads() {
     setIsCollecting(true);
 
     try {
+      // const response = await fetch(`${API_URL}/scrape-google-maps`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ searchQuery, location, maxLeads }),
+      // });
+
       const response = await fetch(`${API_URL}/scrape-google-maps`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: NGROK_HEADERS, // Added here
         body: JSON.stringify({ searchQuery, location, maxLeads }),
       });
 
@@ -190,7 +230,12 @@ export default function GoogleMapsLeads() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/export-google-maps`);
+      // const response = await fetch(`${API_URL}/export-google-maps`);
+
+      const response = await fetch(`${API_URL}/export-google-maps`, {
+        headers: { "ngrok-skip-browser-warning": "true" }, // Added here
+      });
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -217,17 +262,24 @@ export default function GoogleMapsLeads() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/leads/google-maps`, {
+      // const response = await fetch(`${API_URL}/leads/google-maps`, {
+      //   method: "DELETE",
+      // });
+
+      // const data = await response.json();
+
+      // if (data.success) {
+      //   setLeads([]);
+      //   setStats(null);
+      //   alert("All leads cleared successfully");
+      // }
+
+      await fetch(`${API_URL}/leads/google-maps`, {
         method: "DELETE",
+        headers: { "ngrok-skip-browser-warning": "true" }, // Added here
       });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setLeads([]);
-        setStats(null);
-        alert("All leads cleared successfully");
-      }
+      setLeads([]);
+      setStats(null);
     } catch (error) {
       alert("Error clearing leads: " + error.message);
     }
@@ -256,11 +308,20 @@ export default function GoogleMapsLeads() {
       console.log("Updating note for lead:", leadId);
       console.log("Note content:", notes);
 
+      // const response = await fetch(
+      //   `${API_URL}/leads/google-maps/${leadId}/notes`,
+      //   {
+      //     method: "PATCH",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({ notes }),
+      //   }
+      // );
+
       const response = await fetch(
         `${API_URL}/leads/google-maps/${leadId}/notes`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: NGROK_HEADERS, // Added here
           body: JSON.stringify({ notes }),
         }
       );
@@ -316,9 +377,20 @@ export default function GoogleMapsLeads() {
     setIsSendingEmails(true);
 
     try {
+      // const response = await fetch(`${API_URL}/send-emails-selected`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     subject: emailSubject,
+      //     message: emailMessage,
+      //     leadIds: selectedLeads,
+      //     leadsType: "google-maps",
+      //   }),
+      // });
+
       const response = await fetch(`${API_URL}/send-emails-selected`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: NGROK_HEADERS, // Added here
         body: JSON.stringify({
           subject: emailSubject,
           message: emailMessage,
@@ -372,9 +444,20 @@ export default function GoogleMapsLeads() {
     setIsSendingEmails(true);
 
     try {
+      // const response = await fetch(`${API_URL}/send-emails`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     subject: emailSubject,
+      //     message: emailMessage,
+      //     leads: leadsToSend,
+      //     leadsType: "google-maps",
+      //   }),
+      // });
+
       const response = await fetch(`${API_URL}/send-emails`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: NGROK_HEADERS, // Added here
         body: JSON.stringify({
           subject: emailSubject,
           message: emailMessage,
