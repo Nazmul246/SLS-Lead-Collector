@@ -11,7 +11,15 @@ const MessageFormat = () => {
   const leadData = [
     {
       number: 1,
-      note: "Only a not-designed page. A full store design email needs to be sent.\nThey don't have any website. A full store design email needs to be sent.\nThey don't have any website, now using ebay. A full store design email needs to be sent.\nThe website is a portfolio website. A full store design email needs to be sent.",
+      note: "Only a not-designed page. A full store design email needs to be sent.",
+    },
+    {
+      number: 2,
+      note: "A full store design email needs to be sent.\nThey don't have any website. A full store design email needs to be sent.\nThey don't have any website, now using ebay. A full store design email needs to be sent.",
+    },
+    {
+      number: 3,
+      note: "The website is a portfolio website. A full store design email needs to be sent.",
     },
     {
       number: 2,
