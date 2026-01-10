@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Copy, Check, ArrowUp } from "lucide-react";
 import bgVideo from "../assets/bg2.mp4";
+import messageTemplates from "../data/MessageFormats.json";
 
 const MessageFormat = () => {
   const [copiedId, setCopiedId] = useState(null);
@@ -15,38 +16,43 @@ const MessageFormat = () => {
     },
     {
       number: 2,
-      note: "A full store design email needs to be sent.\nThey don't have any website. A full store design email needs to be sent.\nThey don't have any website, now using ebay. A full store design email needs to be sent.",
+      note: "They don't have any website. A full store design email needs to be sent.\nThey don't have any website, now using ebay. A full store design email needs to be sent.",
     },
     {
       number: 3,
       note: "The website is a portfolio website. A full store design email needs to be sent.",
     },
     {
-      number: 2,
-      note: "Website is designed on wordpress, but doesn’t look decent. Need to send redesign + ongoing website support email.\nWebsite is designed, but doesn’t look decent. Need to send redesign + ongoing website support email\nWebsite is designed, but doesn’t look decent. Only one page design without any proper products. Need to send redesign + ongoing website support email.\nWebsite is designed with custom code, but doesn’t look decent. Need to send redesign + ongoing website support email.\nWebsite is designed on squarespace, but doesn’t look decent. Need to send redesign + ongoing website support email.",
-    },
-    {
-      number: 3,
-      note: "The website is designed properly. Need to send ongoing website support email.",
-    },
-    {
       number: 4,
-      note: "We can send collaboration types email with redesign of her website.\nWe can send collaboration types email for any future projects that the team has on their minds.",
+      note: "Website is designed on wordpress, but doesn't look decent. Need to send redesign + ongoing website support email.\nWebsite is designed, but doesn't look decent. Need to send redesign + ongoing website support email\nWebsite is designed, but doesn't look decent. Only one page design without any proper products. Need to send redesign + ongoing website support email.\nWebsite is designed with custom code, but doesn't look decent. Need to send redesign + ongoing website support email.\nWebsite is designed on squarespace, but doesn't look decent. Need to send redesign + ongoing website support email.",
     },
     {
       number: 5,
-      note: "We can send collaboration types email for any future projects that he has on his minds. Note: Client name: Reza Ahmadi.",
+      note: "The website is designed properly. Need to send ongoing website support email.",
     },
     {
       number: 6,
+      note: "We can send collaboration types email with redesign of her website.\nWe can send collaboration types email for any future projects that the team has on their minds.",
+    },
+    {
+      number: 7,
+      note: "We can send collaboration types email for any future projects that he has on his minds. Note: Client name: Reza Ahmadi.",
+    },
+    {
+      number: 8,
       note: "The website is designed with WordPress woo-commerce, we can check back later, and also can send a website migration",
     },
   ];
 
-  const messages = leadData.map((lead) => ({
+  // Convert imported JSON messages to array format
+  const messagesArray = leadData.map((lead) => ({
     leadNumber: lead.number,
-    email: `Hi [Name],\n\nThank you for your interest in our premium package. I'd be happy to provide you with detailed information about our pricing and features.\n\nOur premium package includes:\n- Advanced analytics dashboard\n- 24/7 priority support\n- Custom integrations\n- Unlimited users\n\nWould you like to schedule a quick call to discuss how we can tailor this to your needs?\n\nBest regards,\n[Your Name]`,
-    social: `Hey [Name]! 👋\n\nThanks for reaching out about our premium package! We'd love to share more details with you.\n\nOur premium plan comes with some amazing features that I think you'll love. Want to jump on a quick call this week?\n\nDM me your availability! 📅\n\n#BusinessGrowth #PremiumService`,
+    email:
+      messageTemplates[lead.number]?.email ||
+      "Template not available for this lead note.",
+    social:
+      messageTemplates[lead.number]?.social ||
+      "Template not available for this lead note.",
   }));
 
   const copyToClipboard = async (text, id) => {
@@ -67,7 +73,6 @@ const MessageFormat = () => {
         block: "center",
       });
 
-      // Add a highlight effect
       element.classList.add("ring-4", "ring-yellow-400");
       setTimeout(() => {
         element.classList.remove("ring-4", "ring-yellow-400");
@@ -84,7 +89,6 @@ const MessageFormat = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show button when scrolled down 300px
       setShowScrollTop(window.scrollY > 300);
     };
 
@@ -105,21 +109,20 @@ const MessageFormat = () => {
         Your browser does not support the video tag.
       </video>
 
-      {/* Optional: Dark overlay for better readability */}
-
+      {/* Dark overlay for better readability */}
       <div className="fixed top-0 left-0 w-full h-full bg-gradient-to-br from-black/60 via-purple-900/40 to-black/50 -z-10"></div>
+
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div ref={topRef} className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
             Lead Messages Dashboard
           </h1>
           <p className="text-white">
-            Manage your lead communications efficiently
+            Manage your lead communications efficiently with customized
+            templates
           </p>
         </div>
 
-        {/* Table */}
         <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden mb-8 border border-gray-700">
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -134,9 +137,9 @@ const MessageFormat = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
-                {leadData.map((lead) => (
+                {leadData.map((lead, index) => (
                   <tr
-                    key={lead.number}
+                    key={`${lead.number}-${index}`}
                     className="hover:bg-gray-750 transition-colors cursor-pointer"
                     onClick={() => scrollToMessage(lead.number)}
                   >
@@ -153,15 +156,13 @@ const MessageFormat = () => {
           </div>
         </div>
 
-        {/* Message Blocks */}
         <div className="space-y-6">
-          {messages.map((message) => (
+          {messagesArray.map((message, index) => (
             <div
-              key={message.leadNumber}
+              key={`${message.leadNumber}-${index}`}
               ref={(el) => (messageRefs.current[message.leadNumber] = el)}
               className="grid grid-cols-1 lg:grid-cols-2 gap-6 transition-all duration-300 rounded-lg"
             >
-              {/* Email Message */}
               <div className="bg-gradient-to-br from-blue-900/30 to-blue-800/20 rounded-lg shadow-xl border border-blue-700/50 overflow-hidden">
                 <div className="bg-blue-900/40 px-6 py-4 flex items-center justify-between border-b border-blue-700/50">
                   <div>
@@ -169,34 +170,33 @@ const MessageFormat = () => {
                       Email Message Format
                     </h3>
                     <p className="text-sm text-blue-300">
-                      For Lead Note {message.leadNumber}
+                      For Lead Note #{message.leadNumber}
                     </p>
                   </div>
                   <button
                     onClick={() =>
                       copyToClipboard(
                         message.email,
-                        `email-${message.leadNumber}`
+                        `email-${message.leadNumber}-${index}`
                       )
                     }
                     className="p-2 rounded-lg bg-blue-600 hover:bg-blue-500 transition-colors text-white cursor-pointer"
                     title="Copy to clipboard"
                   >
-                    {copiedId === `email-${message.leadNumber}` ? (
+                    {copiedId === `email-${message.leadNumber}-${index}` ? (
                       <Check className="w-5 h-5" />
                     ) : (
                       <Copy className="w-5 h-5" />
                     )}
                   </button>
                 </div>
-                <div className="p-6">
+                <div className="p-6 max-h-96 overflow-y-auto">
                   <pre className="text-white whitespace-pre-wrap font-sans text-sm leading-relaxed">
                     {message.email}
                   </pre>
                 </div>
               </div>
 
-              {/* Social Media Message */}
               <div className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 rounded-lg shadow-xl border border-purple-700/50 overflow-hidden">
                 <div className="bg-purple-900/40 px-6 py-4 flex items-center justify-between border-b border-purple-700/50">
                   <div>
@@ -204,27 +204,27 @@ const MessageFormat = () => {
                       Social Media Message Format
                     </h3>
                     <p className="text-sm text-purple-300">
-                      For Lead Note {message.leadNumber}
+                      For Lead Note #{message.leadNumber}
                     </p>
                   </div>
                   <button
                     onClick={() =>
                       copyToClipboard(
                         message.social,
-                        `social-${message.leadNumber}`
+                        `social-${message.leadNumber}-${index}`
                       )
                     }
                     className="p-2 rounded-lg bg-purple-600 hover:bg-purple-500 transition-colors text-white cursor-pointer"
                     title="Copy to clipboard"
                   >
-                    {copiedId === `social-${message.leadNumber}` ? (
+                    {copiedId === `social-${message.leadNumber}-${index}` ? (
                       <Check className="w-5 h-5" />
                     ) : (
                       <Copy className="w-5 h-5" />
                     )}
                   </button>
                 </div>
-                <div className="p-6">
+                <div className="p-6 max-h-96 overflow-y-auto">
                   <pre className="text-white whitespace-pre-wrap font-sans text-sm leading-relaxed">
                     {message.social}
                   </pre>
@@ -234,7 +234,6 @@ const MessageFormat = () => {
           ))}
         </div>
 
-        {/* Scroll to Top Button */}
         {showScrollTop && (
           <button
             onClick={scrollToTop}
