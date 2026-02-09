@@ -1,25 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Download,
-  Mail,
-  Trash2,
-  Play,
-  Loader2,
-  CheckCircle,
-  XCircle,
-  MapPin,
-  Search,
-  Facebook,
-  Instagram,
-  Twitter,
-  Linkedin,
-  TrendingUp,
-  Phone,
-  Globe,
-  MapPinned,
-  MailCheck,
-  X,
-} from "lucide-react";
+import { MapPin } from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
 import { StatsDashboard } from "../components/StatsDashboard";
 import { SearchForm } from "../components/SearchForm";
@@ -127,7 +107,7 @@ export default function GoogleMapsLeads() {
           method: "PATCH",
           headers: NGROK_HEADERS, // Uses the object we defined at the top
           body: JSON.stringify(formData),
-        }
+        },
       );
 
       console.log("Response status:", response.status);
@@ -186,7 +166,7 @@ export default function GoogleMapsLeads() {
 
     if (backendStatus !== "connected") {
       alert(
-        "Backend is not connected. Please make sure your Node.js server is running on port 5000"
+        "Backend is not connected. Please make sure your Node.js server is running on port 5000",
       );
       return;
     }
@@ -255,7 +235,7 @@ export default function GoogleMapsLeads() {
   const clearLeads = async () => {
     if (
       !window.confirm(
-        "Are you sure you want to clear all leads? This cannot be undone!"
+        "Are you sure you want to clear all leads? This cannot be undone!",
       )
     ) {
       return;
@@ -290,7 +270,7 @@ export default function GoogleMapsLeads() {
     setSelectedLeads((prev) =>
       prev.includes(leadId)
         ? prev.filter((id) => id !== leadId)
-        : [...prev, leadId]
+        : [...prev, leadId],
     );
   };
 
@@ -323,7 +303,7 @@ export default function GoogleMapsLeads() {
           method: "PATCH",
           headers: NGROK_HEADERS, // Added here
           body: JSON.stringify({ notes }),
-        }
+        },
       );
 
       console.log("Response status:", response.status);
@@ -358,7 +338,7 @@ export default function GoogleMapsLeads() {
       (l) =>
         selectedLeads.includes(l._id || l.id) &&
         l.email &&
-        l.email.includes("@")
+        l.email.includes("@"),
     );
 
     if (selectedLeadsWithEmail.length === 0) {
@@ -368,7 +348,7 @@ export default function GoogleMapsLeads() {
 
     if (
       !window.confirm(
-        `Send email to ${selectedLeadsWithEmail.length} selected leads?`
+        `Send email to ${selectedLeadsWithEmail.length} selected leads?`,
       )
     ) {
       return;
@@ -403,7 +383,7 @@ export default function GoogleMapsLeads() {
 
       if (data.success) {
         alert(
-          `Emails sent to selected leads!\n✅ Successful: ${data.sent}\n❌ Failed: ${data.failed}`
+          `Emails sent to selected leads!\n✅ Successful: ${data.sent}\n❌ Failed: ${data.failed}`,
         );
         setEmailSubject("");
         setEmailMessage("");
@@ -429,7 +409,7 @@ export default function GoogleMapsLeads() {
     }
 
     const leadsToSend = leads.filter(
-      (l) => l.email && l.email.includes("@") && !l.emailSent
+      (l) => l.email && l.email.includes("@") && !l.emailSent,
     );
 
     if (leadsToSend.length === 0) {
@@ -470,7 +450,7 @@ export default function GoogleMapsLeads() {
 
       if (data.success) {
         alert(
-          `Emails sent!\n✅ Successful: ${data.sent}\n❌ Failed: ${data.failed}`
+          `Emails sent!\n✅ Successful: ${data.sent}\n❌ Failed: ${data.failed}`,
         );
         setEmailSubject("");
         setEmailMessage("");
@@ -488,12 +468,12 @@ export default function GoogleMapsLeads() {
   };
 
   const unsentLeadsCount = leads.filter(
-    (l) => l.email && l.email.includes("@") && !l.emailSent
+    (l) => l.email && l.email.includes("@") && !l.emailSent,
   ).length;
 
   const selectedLeadsWithEmailCount = leads.filter(
     (l) =>
-      selectedLeads.includes(l._id || l.id) && l.email && l.email.includes("@")
+      selectedLeads.includes(l._id || l.id) && l.email && l.email.includes("@"),
   ).length;
 
   return (
