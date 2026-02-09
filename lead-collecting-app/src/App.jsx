@@ -7,6 +7,9 @@ import GoogleMapsLeads from "./pages/GoogleMapsLeads";
 import MessageFormat from "./pages/MessageFormat";
 import { EmailTrackingDashboard } from "./components/Emailtrackingdashboard";
 
+// Define your API URL here
+const API_URL = "https://unproposable-jennie-unhalved.ngrok-free.dev";
+
 function App() {
   return (
     <BrowserRouter>
@@ -19,7 +22,10 @@ function App() {
         <Route path="/shopify-directory" element={<LeadCollectionSystem />} />
         <Route path="/google-maps" element={<GoogleMapsLeads />} />
         <Route path="/message-format" element={<MessageFormat />} />
-        <Route path="/email-tracking" element={<EmailTrackingDashboard />} />
+        <Route
+          path="/email-tracking"
+          element={<EmailTrackingDashboard apiUrl={API_URL} />}
+        />
       </Routes>
     </BrowserRouter>
   );
