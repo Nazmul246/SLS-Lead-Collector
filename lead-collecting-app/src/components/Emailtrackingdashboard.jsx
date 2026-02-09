@@ -21,11 +21,13 @@ export const EmailTrackingDashboard = ({ apiUrl }) => {
           ? `${apiUrl}/api/tracking/stats/all`
           : `${apiUrl}/api/tracking/stats/${filter}`;
 
-      console.log("🔍 Fetching from:", endpoint); // ADD THIS LINE
+      console.log("🔍 Fetching from:", endpoint);
 
-      const response = await fetch(endpoint);
-      console.log("📡 Response status:", response.status); // ADD THIS LINE
-      console.log("📡 Response headers:", response.headers.get("content-type")); // ADD THIS LINE
+      const response = await fetch(endpoint, {
+        headers: {
+          "ngrok-skip-browser-warning": "true", // ADD THIS LINE
+        },
+      });
 
       // Check if response is ok
       if (!response.ok) {
