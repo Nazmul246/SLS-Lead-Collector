@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import LeadCollectionSystem from "./pages/LeadCollection";
 import GoogleMapsLeads from "./pages/GoogleMapsLeads";
 import MessageFormat from "./pages/MessageFormat";
+import { EmailTrackingDashboard } from "./components/Emailtrackingdashboard";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/shopify-directory" element={<LeadCollectionSystem />} />
         <Route path="/google-maps" element={<GoogleMapsLeads />} />
         <Route path="/message-format" element={<MessageFormat />} />
+        <Route path="/email-tracking" element={<EmailTrackingDashboard />} />
       </Routes>
     </BrowserRouter>
   );
