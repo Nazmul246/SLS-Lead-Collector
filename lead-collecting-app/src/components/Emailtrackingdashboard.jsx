@@ -21,7 +21,34 @@ export const EmailTrackingDashboard = ({ apiUrl }) => {
           ? `${apiUrl}/api/tracking/stats/all`
           : `${apiUrl}/api/tracking/stats/${filter}`;
 
+      console.log("🔍 Fetching from:", endpoint); // ADD THIS LINE
+
       const response = await fetch(endpoint);
+      console.log("📡 Response status:", response.status); // ADD THIS LINE
+      console.log("📡 Response headers:", response.headers.get("content-type")); // ADD THIS LINE
+
+      // Check if response is ok
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("❌ Server error:", errorText);
+        throw new Error(
+          `Server returned ${response.status}: ${errorText.substring(0, 100)}`,
+        );
+      }
+
+      // Check if response is JSON
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await response.text();
+        console.error(
+          "❌ Received HTML instead of JSON:",
+          text.substring(0, 200),
+        );
+        throw new Error(
+          "Server returned HTML instead of JSON - check server logs",
+        );
+      }
+
       const data = await response.json();
 
       if (data.success) {
@@ -29,6 +56,7 @@ export const EmailTrackingDashboard = ({ apiUrl }) => {
       }
     } catch (error) {
       console.error("Error fetching tracking stats:", error);
+      alert(`Failed to load tracking stats: ${error.message}`);
     } finally {
       setLoading(false);
     }
