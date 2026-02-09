@@ -15,6 +15,8 @@ import {
   Edit2,
   Save,
   Edit,
+  Eye,
+  MousePointer,
 } from "lucide-react";
 import { ManualEntryModal } from "./ManualEntryModal";
 
@@ -66,7 +68,7 @@ export const LeadsTable = ({
   const handleSaveManualEntry = async (formData) => {
     await onUpdateManualEntry(
       manualEntryLead._id || manualEntryLead.id,
-      formData
+      formData,
     );
     setManualEntryLead(null);
   };
@@ -162,11 +164,29 @@ export const LeadsTable = ({
                               {lead.email}
                             </a>
                             {lead.emailSent && (
-                              <MailCheck
-                                size={14}
-                                className="text-green-600 ml-1"
-                                title="Email sent"
-                              />
+                              <div className="flex items-center gap-1 ml-1">
+                                <MailCheck
+                                  size={14}
+                                  className="text-green-600"
+                                  title="Email sent"
+                                />
+                                {/* Show if email was opened */}
+                                {lead.tracking?.opened && (
+                                  <Eye
+                                    size={14}
+                                    className="text-blue-600"
+                                    title={`Opened ${lead.tracking.openCount || 1} time(s)`}
+                                  />
+                                )}
+                                {/* Show if link was clicked */}
+                                {lead.tracking?.clicked && (
+                                  <MousePointer
+                                    size={14}
+                                    className="text-orange-600"
+                                    title={`Clicked ${lead.tracking.clickCount || 1} time(s)`}
+                                  />
+                                )}
+                              </div>
                             )}
                           </div>
                         )}
