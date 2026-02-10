@@ -28,8 +28,7 @@ export const FollowUpModal = ({ lead, onClose, onUpdate }) => {
       firstFollowUp: {
         sent: false,
         sentAt: null,
-        // dueDate: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000), // 3 days
-        dueDate: new Date(now.getTime() + 1 * 60 * 1000), // 3 days
+        dueDate: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000), // 3 days
       },
       secondFollowUp: {
         sent: false,
