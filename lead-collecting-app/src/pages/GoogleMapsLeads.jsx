@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MapPin } from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
 import { StatsDashboard } from "../components/StatsDashboard";
@@ -8,6 +8,7 @@ import { EmailComposer } from "../components/EmailComposer";
 import { LeadsTable } from "../components/LeadsTable";
 import { BackendErrorAlert } from "../components/BackendErrorAlert";
 import bgVideo from "../assets/bg2.mp4";
+import { useNotifications } from "../context/NotificationContext";
 
 const API_URL = "https://unproposable-jennie-unhalved.ngrok-free.dev/api";
 
@@ -18,6 +19,7 @@ const NGROK_HEADERS = {
 };
 
 export default function GoogleMapsLeads() {
+  const hasPlayedSound = useRef(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useState("");
   const [maxLeads, setMaxLeads] = useState(50);
@@ -30,14 +32,89 @@ export default function GoogleMapsLeads() {
   const [isSendingEmails, setIsSendingEmails] = useState(false);
   const [backendStatus, setBackendStatus] = useState("checking");
   const [deletingLeadId, setDeletingLeadId] = useState(null);
+  const pendingSound = useRef(false);
 
   const [selectedLeads, setSelectedLeads] = useState([]);
+  const { setOverdueFollowUps } = useNotifications();
 
   useEffect(() => {
     checkBackendHealth();
     loadExistingLeads();
     loadStats();
   }, []);
+
+  useEffect(() => {
+    const handleUserGesture = () => {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      ctx.resume().then(() => {
+        // If we had a sound waiting to play, play it now!
+        if (pendingSound.current) {
+          playNotificationSound();
+          pendingSound.current = false; // Reset it
+        }
+      });
+
+      window.removeEventListener("click", handleUserGesture);
+      window.removeEventListener("keydown", handleUserGesture);
+    };
+
+    window.addEventListener("click", handleUserGesture);
+    window.addEventListener("keydown", handleUserGesture);
+
+    return () => {
+      window.removeEventListener("click", handleUserGesture);
+      window.removeEventListener("keydown", handleUserGesture);
+    };
+  }, []);
+
+  // const playNotificationSound = () => {
+  //   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  //   const ctx = new AudioContextClass();
+  //   if (ctx.state === "suspended") return false;
+
+  //   const playDing = (time, pitch) => {
+  //     const osc = ctx.createOscillator();
+  //     const gain = ctx.createGain();
+  //     osc.connect(gain);
+  //     gain.connect(ctx.destination);
+
+  //     osc.type = "triangle"; // Softer feel
+  //     osc.frequency.setValueAtTime(pitch, time);
+
+  //     gain.gain.setValueAtTime(0.3, time);
+  //     gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
+
+  //     osc.start(time);
+  //     osc.stop(time + 0.4);
+  //   };
+
+  //   // Play two notes for a "Double Ding"
+  //   playDing(ctx.currentTime, 880);
+  //   playDing(ctx.currentTime + 0.15, 1046.5); // Slightly higher second note
+
+  //   return true;
+  // };
+
+  const playNotificationSound = () => {
+    try {
+      const audio = new Audio("/Yeh-kiya-hua.mp3"); // Path from your public folder
+
+      // We still have to handle the suspended state
+      const promise = audio.play();
+
+      if (promise !== undefined) {
+        promise.catch((error) => {
+          // This will trigger if the browser blocks it
+          console.warn("Audio blocked, waiting for user gesture.");
+        });
+      }
+
+      // Return true if it started playing, false if it likely failed
+      return !audio.paused;
+    } catch (e) {
+      return false;
+    }
+  };
 
   const checkBackendHealth = async () => {
     try {
@@ -64,10 +141,33 @@ export default function GoogleMapsLeads() {
         headers: { "ngrok-skip-browser-warning": "true" }, // Added here
       });
 
+      if (!response.ok) throw new Error("Network response was not ok");
+
       const data = await response.json();
-      setLeads(data.leads || []);
+      // setLeads(data.leads || []);
+
+      const fetchedLeads = data.leads || [];
+
+      // 1. Update Lead State
+      setLeads(fetchedLeads);
+      // 2. Calculate and Update Notifications
+      const overdue = computeOverdue(fetchedLeads);
+      setOverdueFollowUps(overdue);
+
+      // 3. Trigger Sound if necessary
+      if (overdue.length > 0 && !hasPlayedSound.current) {
+        const played = playNotificationSound();
+        if (played) {
+          hasPlayedSound.current = true;
+        } else {
+          // We want to play, but we're blocked. Save it for later!
+          pendingSound.current = true;
+          hasPlayedSound.current = true; // Mark as "handled" so we don't spam it
+        }
+      }
     } catch (error) {
       console.error("Failed to load leads:", error);
+      console.log("Audio blocked by browser policy");
     }
   };
 
@@ -321,6 +421,53 @@ export default function GoogleMapsLeads() {
     }
   };
 
+  // updateFollowUpTracking
+  const updateFollowUpTracking = async (leadId, trackingData) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/leads/google-maps/${leadId}/follow-up`,
+        {
+          method: "PATCH",
+          headers: NGROK_HEADERS,
+          body: JSON.stringify({ followUpTracking: trackingData }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        await loadExistingLeads();
+      } else {
+        throw new Error(data.error || "Failed to update follow-up tracking");
+      }
+    } catch (error) {
+      alert("Error updating follow-up tracking: " + error.message);
+    }
+  };
+
+  // Add this computation (uses your existing `leads` state)
+  const computeOverdue = (leadsData) => {
+    const now = new Date();
+    return leadsData.flatMap((lead) => {
+      if (!lead.followUpTracking?.initialEmail?.sent) return [];
+      const checks = [
+        { key: "firstFollowUp", label: "1st Follow-up" },
+        { key: "secondFollowUp", label: "2nd Follow-up" },
+        { key: "thirdFollowUp", label: "Final Follow-up" },
+      ];
+      return checks
+        .filter((c) => {
+          const fu = lead.followUpTracking[c.key];
+          return fu && !fu.sent && fu.dueDate && new Date(fu.dueDate) < now;
+        })
+        .map((c) => ({
+          leadId: lead._id || lead.id,
+          leadName: lead.businessName,
+          label: c.label,
+        }));
+    });
+  };
+
   // NEW: Send emails to selected leads
   const sendEmailsToSelected = async () => {
     if (!emailSubject.trim() || !emailMessage.trim()) {
@@ -546,6 +693,7 @@ export default function GoogleMapsLeads() {
           onToggleSelectAll={handleToggleSelectAll}
           onUpdateNote={updateLeadNote}
           onUpdateManualEntry={updateManualEntry}
+          onUpdateFollowUp={updateFollowUpTracking}
         />
 
         <BackendErrorAlert backendStatus={backendStatus} />

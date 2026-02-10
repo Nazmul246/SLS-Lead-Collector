@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNotifications } from "../context/NotificationContext";
 import {
+  Bell,
   Menu,
   X,
   Database,
@@ -14,6 +16,21 @@ import logo from "../assets/Shoplift Studio Logo.png";
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { overdueFollowUps, setOpenLeadId } = useNotifications(); // ✅ add
+  const count = overdueFollowUps.length;
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate(); // ✅ add inside Navbar component
+
+  // Add this after your other useStates in Navbar
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest(".notification-bell")) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const navItems = [
     {
@@ -90,6 +107,49 @@ const Navbar = () => {
             >
               <Linkedin className="h-5 w-5" />
             </a>
+            <div className="relative notification-bell">
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="relative text-white hover:bg-white/10 p-2 rounded-lg transition-all"
+              >
+                <Bell className="h-5 w-5" />
+                {count > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold animate-pulse">
+                    {count}
+                  </span>
+                )}
+              </button>
+
+              {showDropdown && count > 0 && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 z-50">
+                  <div className="p-3 border-b bg-red-50 rounded-t-xl">
+                    <p className="font-bold text-red-700">
+                      ⚠️ {count} Overdue Follow-up{count > 1 ? "s" : ""}
+                    </p>
+                  </div>
+                  <div className="max-h-64 overflow-y-auto">
+                    {overdueFollowUps.map((item, i) => (
+                      <div
+                        key={i}
+                        className="p-3 border-b hover:bg-red-50 cursor-pointer transition-colors"
+                        onClick={() => {
+                          setOpenLeadId(item.leadId); // ✅ tell the page which lead to open
+                          navigate("/google-maps");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        <p className="font-medium text-gray-900 text-sm">
+                          {item.leadName}
+                        </p>
+                        <p className="text-xs text-red-600">
+                          {item.label} is overdue!
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}

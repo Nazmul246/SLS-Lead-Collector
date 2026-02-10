@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Facebook,
   Globe,
@@ -17,8 +17,11 @@ import {
   Edit,
   Eye,
   MousePointer,
+  Target,
 } from "lucide-react";
+import { FollowUpModal } from "./FollowUpModal";
 import { ManualEntryModal } from "./ManualEntryModal";
+import { useNotifications } from "../context/NotificationContext"; // ✅ add
 
 export const LeadsTable = ({
   leads,
@@ -29,11 +32,25 @@ export const LeadsTable = ({
   onToggleSelectAll,
   onUpdateNote,
   onUpdateManualEntry,
+  onUpdateFollowUp,
 }) => {
+  const { openLeadId, setOpenLeadId } = useNotifications();
   const [editingNoteId, setEditingNoteId] = useState(null);
   const [noteText, setNoteText] = useState("");
   const [savingNoteId, setSavingNoteId] = useState(null);
   const [manualEntryLead, setManualEntryLead] = useState(null);
+  const [followUpLead, setFollowUpLead] = useState(null);
+
+  // ✅ Add this useEffect
+  useEffect(() => {
+    if (openLeadId) {
+      const lead = leads.find((l) => (l._id || l.id) === openLeadId);
+      if (lead) {
+        setFollowUpLead(lead);
+        setOpenLeadId(null); // reset after opening
+      }
+    }
+  }, [openLeadId, leads]);
 
   if (leads.length === 0) return null;
 
@@ -71,6 +88,20 @@ export const LeadsTable = ({
       formData,
     );
     setManualEntryLead(null);
+  };
+
+  // Add this function in LeadsTable
+  const handleOpenFollowUp = (lead) => {
+    setFollowUpLead(lead);
+  };
+
+  const handleCloseFollowUp = () => {
+    setFollowUpLead(null);
+  };
+
+  const handleUpdateFollowUp = async (trackingData) => {
+    await onUpdateFollowUp(followUpLead._id || followUpLead.id, trackingData);
+    setFollowUpLead(null);
   };
 
   return (
@@ -369,7 +400,17 @@ export const LeadsTable = ({
                       )}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex justify-center">
+                      <div className="flex justify-center gap-2">
+                        {/* Track Outreach Button */}
+                        <button
+                          onClick={() => handleOpenFollowUp(lead)}
+                          className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 p-2 rounded-lg transition-colors cursor-pointer"
+                          title="Track outreach"
+                        >
+                          <Target size={18} />
+                        </button>
+
+                        {/* Delete Button */}
                         <button
                           onClick={() => onDeleteLead(leadId)}
                           disabled={deletingLeadId === leadId}
@@ -398,6 +439,15 @@ export const LeadsTable = ({
           lead={manualEntryLead}
           onClose={handleCloseManualEntry}
           onSave={handleSaveManualEntry}
+        />
+      )}
+
+      {/* FollowUpModal */}
+      {followUpLead && (
+        <FollowUpModal
+          lead={followUpLead}
+          onClose={handleCloseFollowUp}
+          onUpdate={handleUpdateFollowUp}
         />
       )}
     </>
