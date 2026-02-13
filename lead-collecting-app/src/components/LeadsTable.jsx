@@ -104,6 +104,47 @@ export const LeadsTable = ({
     setFollowUpLead(null);
   };
 
+  // Helper: Check if any follow-up is due TODAY (not overdue yet, but today is the deadline)
+  const getFollowUpStatus = (lead) => {
+    if (!lead.followUpTracking?.initialEmail?.sent) return null;
+
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    const checks = ["firstFollowUp", "secondFollowUp", "thirdFollowUp"];
+
+    for (const key of checks) {
+      const fu = lead.followUpTracking[key];
+      if (fu && !fu.sent && fu.dueDate) {
+        const dueDate = new Date(fu.dueDate);
+        const dueDateOnly = new Date(
+          dueDate.getFullYear(),
+          dueDate.getMonth(),
+          dueDate.getDate(),
+        );
+
+        // Check if it's due TODAY
+        if (dueDateOnly.getTime() === today.getTime()) {
+          return "dueToday";
+        }
+      }
+    }
+    return null;
+  };
+
+  // Helper: Get follow-up progress count (0-4)
+  const getFollowUpProgress = (lead) => {
+    if (!lead.followUpTracking?.initialEmail?.sent) return 0;
+
+    let count = 1; // Initial email sent
+
+    if (lead.followUpTracking.firstFollowUp?.sent) count++;
+    if (lead.followUpTracking.secondFollowUp?.sent) count++;
+    if (lead.followUpTracking.thirdFollowUp?.sent) count++;
+
+    return count;
+  };
+
   return (
     <>
       <div className="backdrop-blur-lg bg-white/15 rounded-lg shadow-2xl border border-white/30 p-6">
@@ -160,15 +201,20 @@ export const LeadsTable = ({
                 const isSelected = selectedLeads.includes(leadId);
                 const isEditing = editingNoteId === leadId;
                 const isSaving = savingNoteId === leadId;
+                const followUpStatus = getFollowUpStatus(lead);
+                const isDueToday = followUpStatus === "dueToday";
+                const followUpProgress = getFollowUpProgress(lead);
+                const superscripts = ["⁰", "¹", "²", "³", "⁴"];
 
                 return (
                   <tr
-                    key={leadId}
                     className={`${
                       index % 2 === 0
                         ? "backdrop-blur-lg bg-white/70 shadow-2xl"
                         : "backdrop-blur-lg bg-white/60 shadow-2xl"
-                    } ${isSelected ? "bg-purple-50" : ""}`}
+                    } ${isSelected ? "bg-purple-50" : ""} ${
+                      isDueToday ? "animate-blink-orange border-2" : ""
+                    }`}
                   >
                     <td className="px-4 py-3 text-center">
                       <input
@@ -404,10 +450,15 @@ export const LeadsTable = ({
                         {/* Track Outreach Button */}
                         <button
                           onClick={() => handleOpenFollowUp(lead)}
-                          className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 p-2 rounded-lg transition-colors cursor-pointer"
+                          className="relative text-purple-600 hover:text-purple-800 hover:bg-purple-50 p-2 rounded-lg transition-colors cursor-pointer"
                           title="Track outreach"
                         >
                           <Target size={18} />
+                          {followUpProgress > 0 && (
+                            <span className="absolute -top-1 -right-1 text-[22px] text-purple-600 w-4 h-4 font-bold">
+                              {superscripts[followUpProgress]}
+                            </span>
+                          )}
                         </button>
 
                         {/* Delete Button */}

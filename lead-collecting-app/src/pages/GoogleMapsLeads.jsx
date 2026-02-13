@@ -67,34 +67,6 @@ export default function GoogleMapsLeads() {
     };
   }, []);
 
-  // const playNotificationSound = () => {
-  //   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  //   const ctx = new AudioContextClass();
-  //   if (ctx.state === "suspended") return false;
-
-  //   const playDing = (time, pitch) => {
-  //     const osc = ctx.createOscillator();
-  //     const gain = ctx.createGain();
-  //     osc.connect(gain);
-  //     gain.connect(ctx.destination);
-
-  //     osc.type = "triangle"; // Softer feel
-  //     osc.frequency.setValueAtTime(pitch, time);
-
-  //     gain.gain.setValueAtTime(0.3, time);
-  //     gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
-
-  //     osc.start(time);
-  //     osc.stop(time + 0.4);
-  //   };
-
-  //   // Play two notes for a "Double Ding"
-  //   playDing(ctx.currentTime, 880);
-  //   playDing(ctx.currentTime + 0.15, 1046.5); // Slightly higher second note
-
-  //   return true;
-  // };
-
   const playNotificationSound = () => {
     try {
       const audio = new Audio("/Yeh-kiya-hua.mp3"); // Path from your public folder
