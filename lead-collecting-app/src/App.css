@@ -22,11 +22,11 @@
 @keyframes blink-orange {
   0%,
   100% {
-    background-color: rgb(254 215 170); /* orange-200 */
-    border-color: rgb(251 146 60); /* orange-400 */
+    background-color: rgb(252, 183, 183); /* orange-200 */
+    border-color: rgb(254, 44, 44); /* orange-400 */
   }
   50% {
-    background-color: rgb(251 146 60); /* orange-400 */
-    border-color: rgb(234 88 12); /* orange-600 */
+    background-color: rgb(237, 123, 123); /* orange-400 */
+    border-color: rgb(236, 73, 73); /* orange-600 */
   }
 }
